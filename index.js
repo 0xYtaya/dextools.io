@@ -36,25 +36,27 @@ async function ProxyAuth(url, proxy, browserPath) {
     await page.click(".favorite-button");
     await sleep(5000);
     print("Clicked favorite button");
-    await page.waitForSelector(".social-icons > div > a");
+    await page.waitForSelector(".social-icons");
     const sociallinks1 = await page.evaluate(() => {
         const links = document.querySelectorAll(".social-icons > div > a");
         return Array.from(links).map(link => link.href);
     });
-    await page.waitForSelector(".social-icons > a");
     const sociallinks2 = await page.evaluate(() => {
         const links = document.querySelectorAll(".social-icons > a");
         return Array.from(links).map(link => link.href);
     });
     const sociallinks = sociallinks1.concat(sociallinks2);
     for (const iterator of sociallinks) {
-        print(`opneing : ${iterator}`);
         const page = await browser.newPage();
-        await page.goto(iterator, { timeout: 0 });
-        await page.close();
+        try {
+            await page.goto(iterator, { timeout: 5000 });
+            await page.close();
+        }
+        catch{}
     }
-    await page.close();
-    browser.close();
+    print("All social media links opened");
+    await browser.close();
+    print(`Done with ${proxty.url}:${proxty.ussername}:${proxty.password}`)
 }
 
 (async () => {
@@ -69,7 +71,7 @@ async function ProxyAuth(url, proxy, browserPath) {
 
     const proxies = fs.readFileSync('proxy.conf', 'utf8').split('\n');
     const settings = JSON.parse(fs.readFileSync('dextools.json', 'utf8'));
-    
+
     for (let index = 0; index < settings.proxyNumber; index++) {
         print(`Trying : ${proxies[index % proxies.length]}`);
         ProxyAuth(settings.url, proxies[index % proxies.length], settings.browserPath);
