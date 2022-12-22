@@ -1,0 +1,15 @@
+{
+  "name": "dextools.io",
+  "version": "1.0.0",
+  "description": "dextools.io - A tool for tracking the Ethereum blockchain",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "BleedTheFreak",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^19.4.1"
+  }
+}
