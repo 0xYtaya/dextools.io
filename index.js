@@ -34,8 +34,13 @@ async function ProxyAuth(url, proxy, browserPath) {
     print("Page reloaded");
     await page.waitForSelector(".favorite-button");
     await page.click(".favorite-button");
-    await sleep(5000);
     print("Clicked favorite button");
+    await page.waitForSelector("ul[role='tablist'] > li > button");
+    await page.click("ul[role='tablist'] > li > button");
+    print("Clicked swap button");
+    await page.waitForSelector(".btn.swap-button.ng-tns-c161-3.ng-star-inserted");
+    await page.click(".btn.swap-button.ng-tns-c161-3.ng-star-inserted");
+    print("Clicked trade button");
     await page.waitForSelector(".social-icons");
     const sociallinks1 = await page.evaluate(() => {
         const links = document.querySelectorAll(".social-icons > div > a");
